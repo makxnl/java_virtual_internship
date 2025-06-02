@@ -41,4 +41,17 @@ subprojects {
 		println "${projectDir}/build/"
 	}
 
+	dependencies {
+		compileOnly "org.projectlombok:lombok:1.18.36"
+		annotationProcessor "org.projectlombok:lombok:1.18.36"
+		// https://mvnrepository.com/artifact/org.mockito/mockito-core
+		testImplementation("org.mockito:mockito-core:5.15.2")
+		// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+		testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
+		// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+		testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+
+		implementation('com.fasterxml.jackson.core:jackson-core:2.14.2')
+	}
+
 }
