@@ -12,8 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -23,7 +22,7 @@ public class TravelCalculatePremiumControllerTest {
     @Autowired private MockMvc mockMvc;
 
     @Test
-    public void simpleRestControllerTest() throws Exception {
+    public void shouldCorrectResponse() throws Exception {
         mockMvc.perform(post("/insurance/travel/")
                         .content("{" +
                                 "\"personFirstName\" : \"Vasja\",\n" +
@@ -41,4 +40,46 @@ public class TravelCalculatePremiumControllerTest {
                 .andReturn();
     }
 
+    @Test
+    public void shouldCorrectResponseWithError() throws Exception {
+        mockMvc.perform(post("/insurance/travel/")
+                        .content("{" +
+                                "\"personFirstName\" : \"\",\n" +
+                                "\"personLastName\" : \"Pupkin\",\n" +
+                                "\"agreementDateFrom\" : \"2021-05-25\",\n" +
+                                "\"agreementDateTo\" : \"2021-05-29\"\n" +
+                                "}")
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("errors[0].field", is("personFirstName")))
+                .andExpect(jsonPath("errors[0].message", is("Must not be empty!")))
+                .andReturn();
+    }
+
+    @Test
+    public void should404ThenEndpointIsWrong() throws Exception {
+        mockMvc.perform(post("/insurance/")
+                        .content("{" +
+                                "\"personFirstName\" : \"\",\n" +
+                                "\"personLastName\" : \"Pupkin\",\n" +
+                                "\"agreementDateFrom\" : \"2021-05-25\",\n" +
+                                "\"agreementDateTo\" : \"2021-05-29\"\n" +
+                                "}")
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
+    }
+
+    @Test
+    public void shouldUnsupportedMediaType() throws Exception {
+        mockMvc.perform(post("/insurance/travel/")
+                        .content("{" +
+                                "\"personFirstName\" : \"Vasja\",\n" +
+                                "\"personLastName\" : \"Pupkin\",\n" +
+                                "\"agreementDateFrom\" : \"2021-05-25\",\n" +
+                                "\"agreementDateTo\" : \"2021-05-29\"\n" +
+                                "}")
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE))
+                .andExpect(status().isUnsupportedMediaType());
+    }
 }
