@@ -11,6 +11,9 @@ import java.util.concurrent.TimeUnit;
 public class DateTimeService {
 
     public long getDaysBetween(Date date1, Date date2) {
+        if (date1.after(date2) || date1.equals(date2)) {
+            throw new RuntimeException();
+        }
         long diffInMillis = date1.getTime() - date2.getTime();
         return TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
     }
