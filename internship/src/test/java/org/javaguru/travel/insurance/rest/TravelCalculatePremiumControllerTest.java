@@ -27,15 +27,15 @@ public class TravelCalculatePremiumControllerTest {
                         .content("{" +
                                 "\"personFirstName\" : \"Vasja\",\n" +
                                 "\"personLastName\" : \"Pupkin\",\n" +
-                                "\"agreementDateFrom\" : \"2021-05-25\",\n" +
-                                "\"agreementDateTo\" : \"2021-05-29\"\n" +
+                                "\"agreementDateFrom\" : \"25-05-2021\",\n" +
+                                "\"agreementDateTo\" : \"29-05-2021\"\n" +
                                 "}")
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("personFirstName", is("Vasja")))
                 .andExpect(jsonPath("personLastName", is("Pupkin")))
-                .andExpect(jsonPath("agreementDateFrom", is("2021-05-25")))
-                .andExpect(jsonPath("agreementDateTo", is("2021-05-29")))
+                .andExpect(jsonPath("agreementDateFrom", is("25-05-2021")))
+                .andExpect(jsonPath("agreementDateTo", is("29-05-2021")))
                 .andExpect(jsonPath("agreementPrice", is(4)))
                 .andReturn();
     }

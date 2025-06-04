@@ -41,23 +41,21 @@ class TravelCalculatePremiumRequestValidator {
 
     private Optional<ValidationError> validateAgreementDateFrom(TravelCalculatePremiumRequest request) {
         return (request.getAgreementDateFrom() == null)
-                ? Optional.of(new ValidationError("agreementDateFrom", "Must not be empty" +
-                " and has dd-MM-yyyy format!"))
+                ? Optional.of(new ValidationError("agreementDateFrom", "Must not be empty!"))
                 : Optional.empty();
     }
 
     private Optional<ValidationError> validateAgreementDateTo(TravelCalculatePremiumRequest request) {
         return (request.getAgreementDateTo() == null)
-                ? Optional.of(new ValidationError("agreementDateTo", "Must not be empty" +
-                " and has dd-MM-yyyy format!"))
+                ? Optional.of(new ValidationError("agreementDateTo", "Must not be empty!"))
                 : Optional.empty();
     }
 
     private Optional<ValidationError> validateDateToMoreThenDateFrom(TravelCalculatePremiumRequest request) {
         return (request.getAgreementDateFrom() != null
                 && request.getAgreementDateTo() != null
-                && request.getAgreementDateFrom().after(request.getAgreementDateTo())
-                || request.getAgreementDateFrom().equals(request.getAgreementDateTo()))
+                && (request.getAgreementDateFrom().after(request.getAgreementDateTo())
+                || request.getAgreementDateFrom().equals(request.getAgreementDateTo())))
                 ? Optional.of(new ValidationError("agreementDate", "Date To Must Be More Than Date From!"))
                 : Optional.empty();
     }

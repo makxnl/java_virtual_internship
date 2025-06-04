@@ -18,10 +18,13 @@ public class TravelCalculatePremiumResponse extends CoreResponse {
 
     private String personFirstName;
     private String personLastName;
+
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date agreementDateFrom;
+
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date agreementDateTo;
+
     private BigDecimal agreementPrice;
 
     public TravelCalculatePremiumResponse(List<ValidationError> errors) {

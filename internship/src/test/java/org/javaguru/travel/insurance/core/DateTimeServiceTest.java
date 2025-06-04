@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DateTimeServiceTest {
 
@@ -21,14 +22,6 @@ public class DateTimeServiceTest {
     }
 
     @Test
-    public void shouldDaysBetweenBeZero() {
-        Date date1 = createDate("01.01.2023");
-        Date date2 = createDate("01.01.2023");
-        var daysBetween = dateTimeService.getDaysBetween(date1, date2);
-        assertEquals(daysBetween, 0L);
-    }
-
-    @Test
     public void shouldDaysBetweenBePositive() {
         Date date1 = createDate("01.01.2023");
         Date date2 = createDate("10.01.2023");
@@ -37,11 +30,24 @@ public class DateTimeServiceTest {
     }
 
     @Test
-    public void shouldDaysBetweenBeNegative() {
+    public void shouldDaysBetweenEqualsThrowIllegalArgumentException() {
+        Date date1 = createDate("01.01.2023");
+        Date date2 = createDate("01.01.2023");
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class
+                , () -> dateTimeService.getDaysBetween(date1, date2));
+        assertEquals("Начальная дата должна быть раньше конечной"
+                , exception.getMessage());
+    }
+
+
+    @Test
+    public void shouldDaysBetweenAfterThrowIllegalArgumentException() {
         Date date1 = createDate("10.01.2023");
         Date date2 = createDate("01.01.2023");
-        var daysBetween = dateTimeService.getDaysBetween(date1, date2);
-        assertEquals(daysBetween, -9L);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class
+                , () -> dateTimeService.getDaysBetween(date1, date2));
+        assertEquals("Начальная дата должна быть раньше конечной"
+                , exception.getMessage());
     }
 
 }
